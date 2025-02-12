@@ -9,16 +9,22 @@ import { useEffect } from "react";
 
 const LoginPage = () => {
   const { isLoaded, isSignedIn, user } = useUser();
-
   const router = useRouter();
 
   useEffect(() => {
-    const role = user?.publicMetadata.role;
+    if (isLoaded && isSignedIn) {
+      const role = user?.publicMetadata.role;
+      console.log('User role:', role);
 
-    if (role) {
-      router.push(`/${role}`);
+      if (role) {
+        router.push(`/${role}`);
+      } else {
+        console.log('No role found, staying on the login page.');
+      }
+    } else {
+      console.log('User data not yet loaded or user not signed in.');
     }
-  }, [user, router]);
+  }, [isLoaded, isSignedIn, user, router]);
 
   return (
     <div className="h-screen flex items-center justify-center bg-lamaSkyLight">
